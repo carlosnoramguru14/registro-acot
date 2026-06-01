@@ -7,7 +7,7 @@
 <style>
 :root{
   --navy:#003087;--navy2:#00215c;--navy3:#001a4a;
-  --gold:#f5c400;--gold2:#ffd740;
+  --gold:#f5c400;--gold2:#ffd740;h
   --green:#16a34a;--green-bg:#dcfce7;
   --red:#dc2626;--red-bg:#fee2e2;h
   --border:#e2e8f0;--bg:#f1f5f9;--white:#fff;
@@ -729,8 +729,8 @@ async function guardarRegistro(){
   setBtnLoading(true);
   var data = Object.assign({accion:'agregar', timestamp:new Date().toISOString(), estado:'Privado de libertad', motivoCancelacion:''}, campos);
   try{
-    await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-    var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000); setTimeout(cargarRegistros, 3000);
+    await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', body:new URLSearchParams(data))});
+    var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000);
     local.push(Object.assign({}, data, {id:campos.nroDoc}));
     localStorage.setItem('extranjeros_pdi', JSON.stringify(local));
     limpiarFormulario();
@@ -778,7 +778,7 @@ function cargarRegistros(){
   var tout = setTimeout(function(){
     delete window[cbName];
     try{ document.body.removeChild(sc); } catch(e){}
-    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000); setTimeout(cargarRegistros, 3000);
+    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000);
     renderTabla(); actualizarStats();
     if(btnAct){ btnAct.disabled = false; btnAct.textContent = '🔄 Actualizar'; }
   }, 8000);
@@ -969,8 +969,8 @@ async function confirmarCancelacion(){
   registros[cancelandoIdx].fechaCancelacion = new Date().toISOString().split('T')[0];
   localStorage.setItem('extranjeros_pdi', JSON.stringify(registros));
   try{
-    await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({accion:'cancelar', id:registros[cancelandoIdx].id||registros[cancelandoIdx].nroDoc, motivo:motivo, fechaCancelacion:registros[cancelandoIdx].fechaCancelacion})});
+    await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors',
+      body:new URLSearchParams({accion:'cancelar', id:registros[cancelandoIdx].id||registros[cancelandoIdx].nroDoc, motivo:motivo, fechaCancelacion:registros[cancelandoIdx].fechaCancelacion})});
   } catch(e){}
       cerrarModal(); showToast('🚫 Registro cancelado'); setTimeout(cargarRegistros, 1500);
 }
@@ -1111,7 +1111,7 @@ async function enviarExcel(){
       funcionario:r.funcionario, unidad:r.unidad, telefono:r.telefono,
       estado:'Privado de libertad', motivoCancelacion:''};
     try{
-      await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+      await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', body:new URLSearchParams(data))});
       var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000);
       local.push(Object.assign({}, data, {id:r.nroDoc}));
       localStorage.setItem('extranjeros_pdi', JSON.stringify(local));
