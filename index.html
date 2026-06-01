@@ -730,7 +730,7 @@ async function guardarRegistro(){
   var data = Object.assign({accion:'agregar', timestamp:new Date().toISOString(), estado:'Privado de libertad', motivoCancelacion:''}, campos);
   try{
     await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-    var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]');
+    var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000); setTimeout(cargarRegistros, 3000);
     local.push(Object.assign({}, data, {id:campos.nroDoc}));
     localStorage.setItem('extranjeros_pdi', JSON.stringify(local));
     limpiarFormulario();
@@ -778,7 +778,7 @@ function cargarRegistros(){
   var tout = setTimeout(function(){
     delete window[cbName];
     try{ document.body.removeChild(sc); } catch(e){}
-    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]');
+    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000); setTimeout(cargarRegistros, 3000);
     renderTabla(); actualizarStats();
     if(btnAct){ btnAct.disabled = false; btnAct.textContent = '🔄 Actualizar'; }
   }, 8000);
@@ -792,11 +792,11 @@ function cargarRegistros(){
   sc.onerror = function(){
     clearTimeout(tout); delete window[cbName];
     try{ document.body.removeChild(sc); } catch(e){}
-    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]');
+    registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000);
     renderTabla(); actualizarStats();
     if(btnAct){ btnAct.disabled = false; btnAct.textContent = '🔄 Actualizar'; }
   };
-  sc.src = SCRIPT_URL + '?accion=listar&callback=' + cbName;
+  sc.src = SCRIPT_URL + '?accion=listar&t=' + Date.now() + '&callback=' + cbName;
   document.body.appendChild(sc);
   renderTabla(); actualizarStats();
 }
@@ -1112,7 +1112,7 @@ async function enviarExcel(){
       estado:'Privado de libertad', motivoCancelacion:''};
     try{
       await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
-      var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]');
+      var local = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]'); setTimeout(cargarRegistros, 3000);
       local.push(Object.assign({}, data, {id:r.nroDoc}));
       localStorage.setItem('extranjeros_pdi', JSON.stringify(local));
       enviados++;
