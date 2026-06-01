@@ -785,7 +785,7 @@ function cargarRegistros(){
   window[cbName] = function(data){
     clearTimeout(tout); delete window[cbName];
     try{ document.body.removeChild(sc); } catch(e){}
-    if(data && data.registros){ registros = data.registros; localStorage.setItem('extranjeros_pdi', JSON.stringify(registros)); }
+    registros = (data && data.registros) ? data.registros : []; localStorage.setItem('extranjeros_pdi', JSON.stringify(registros));
     renderTabla(); actualizarStats();
     if(btnAct){ btnAct.disabled = false; btnAct.textContent = '🔄 Actualizar'; }
   };
