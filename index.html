@@ -564,7 +564,7 @@ function intentarLogin(){
   if(valido){
     loginAttempts = 0;
     blockUntil = 0;
-    try{ sessionStorage.setItem('sesion_acot', JSON.stringify({usuario:user, expira:Date.now()+(SESSION_HOURS*3600*1000)})); }catch(e){}
+    try{ localStorage.removeItem('extranjeros_pdi'); sessionStorage.setItem('sesion_acot', JSON.stringify({usuario:user, expira:Date.now()+(SESSION_HOURS*3600*1000)})); }catch(e){}
     var ls = document.getElementById('loginScreen');
     if(ls){ ls.style.cssText = 'display:none!important'; }
     cargarRegistros();
