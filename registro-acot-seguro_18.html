@@ -418,7 +418,7 @@ tbody td{padding:10px 13px;vertical-align:middle;}
       </div>
       <div class="filter-bar">
         <input type="text" id="buscar" placeholder="🔍 Buscar nombre, documento, nacionalidad, funcionario..." oninput="renderTabla()"/>
-        <button class="btn-outline" id="btnActualizar" onclick="cargarRegistros()">🔄 Actualizar</button>
+        <button class="btn-outline" id="btnActualizar" onclick="()">🔄 Actualizar</button>
       </div>
       <div class="nac-resumen">
         <div class="nac-resumen-title">📍 Resumen por nacionalidad (privados de libertad)</div>
@@ -453,7 +453,7 @@ tbody td{padding:10px 13px;vertical-align:middle;}
             <button id="btnJornadaNoche" class="subtab" style="font-size:11px;padding:4px 10px;" onclick="setJornada('nocturna',this)">🌙 Nocturna</button>
           </div>
           <button class="btn-reporte" onclick="generarReporte()">📊 Generar reporte</button>
-          <button class="btn-outline" onclick="cargarRegistros()">🔄 Actualizar datos</button>
+          <button class="btn-outline" onclick="()">🔄 Actualizar datos</button>
         </div>
       </div>
       <div id="reportePreview" style="color:var(--text3);font-size:13px;text-align:center;padding:2rem;">
@@ -555,10 +555,10 @@ let loginAttempts = 0;
 let blockUntil = 0;
 
 function intentarLogin(){
-  if(Date.now() < blockUntil) return;
+  if(Date.now() < blockUntil) return;h
   var uEl = document.getElementById('loginUser');
   var pEl = document.getElementById('loginPass');
-  var user = uEl ? uEl.value.trim().toLowerCase() : '';
+  var user = uEl ? uEl.value.trim().toLowerCase() : '';h
   var pass = pEl ? pEl.value : '';
   if(!user || !pass){ mostrarLoginError('Ingresa usuario y contraseña.'); return; }
   var valido = (user === 'acotseminario1' && pass === 'Acot2024') || (user === 'acotseminario2' && pass === 'Acot2025');
@@ -568,7 +568,7 @@ function intentarLogin(){
     try{ sessionStorage.setItem('sesion_acot', JSON.stringify({usuario:user, expira:Date.now()+(SESSION_HOURS*3600*1000)})); }catch(e){}
     var ls = document.getElementById('loginScreen');
     if(ls){ ls.style.cssText = 'display:none!important'; }
-    cargarRegistros();
+    ();
   } else {
     loginAttempts++;
     if(loginAttempts >= 10){
@@ -683,7 +683,7 @@ function switchTab(tab, btn){
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
   document.getElementById('tab-' + tab).classList.add('active');
   btn.classList.add('active');
-  if(tab === 'lista' || tab === 'reporte') cargarRegistros();
+  if(tab === 'lista' || tab === 'reporte') ();
 }
 
 function setSubtab(sub, btn){
@@ -736,7 +736,7 @@ async function guardarRegistro(){
     localStorage.setItem('extranjeros_pdi', JSON.stringify(local));
     limpiarFormulario();
     showToast('✅ Registro guardado — sincronizando...');
-    setTimeout(function(){ cargarRegistros(); showToast('✅ Registro guardado y sincronizado'); }, 2500);
+    setTimeout(function(){ (); showToast('✅ Registro guardado y sincronizado'); }, 2500);
   } catch(e){ showToast('❌ Error al guardar.', true); }
   finally{ setBtnLoading(false); }
 }
@@ -767,11 +767,6 @@ function mostrarError(msg){
 
 // ═══════════════ CARGAR ═══════════════
 function cargarRegistros(){
-  try{
-    var s = JSON.parse(sessionStorage.getItem('sesion_acot') || 'null');
-    if(!s || Date.now() > s.expira) return;
-  } catch(e){ return; }
-
   var btnAct = document.getElementById('btnActualizar');
   if(btnAct){ btnAct.disabled = true; btnAct.textContent = '⏳ Cargando...'; }
   fetch(SCRIPT_URL + '?accion=listar').then(function(r){return r.json();}).then(function(data){if(data&&data.registros){registros=data.registros;renderTabla();actualizarStats();}if(btnAct){btnAct.disabled=false;btnAct.textContent='\u{1F504} Actualizar';}}).catch(function(){registros=[];renderTabla();actualizarStats();if(btnAct){btnAct.disabled=false;btnAct.textContent='\u{1F504} Actualizar';}});
@@ -1074,7 +1069,7 @@ async function enviarExcel(){
   if(!excelDatos.length){ showToast('No hay datos para enviar.', true); return; }
   var validos = excelDatos.filter(function(r){ return r.nombres && r.apellidos && r.nroDoc && r.funcionario; });
   if(validos.length === 0){ showToast('❌ Ningun registro tiene los campos minimos.', true); return; }
-  document.getElementById('btnExcelText').style.display = 'none';
+  document.getElementById('btnExcelText').style.display = 'none';h
   document.getElementById('btnExcelSpinner').style.display = 'inline-block';
   document.getElementById('btnCargarExcel').disabled = true;
   var enviados = 0; var errores = 0;
@@ -1115,6 +1110,8 @@ function showToast(msg, error){
 // ═══════════════ INIT ═══════════════
 document.getElementById('fechaIngreso').valueAsDate = new Date();
 actualizarStats();
+cargarRegistros();
+setInterval(cargarRegistros, 30000);
 </script>
 </body>
 </html>
