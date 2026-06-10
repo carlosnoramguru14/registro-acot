@@ -561,14 +561,14 @@ function intentarLogin(){
   var user = uEl ? uEl.value.trim().toLowerCase() : '';h
   var pass = pEl ? pEl.value : '';
   if(!user || !pass){ mostrarLoginError('Ingresa usuario y contraseña.'); return; }
-  var valido = (user === 'acotseminario1' && pass === 'Acot2024') || (user === 'acotseminario2' && pass === 'Acot2025');
+  var valido = (user === 'acotseminario1' && pass === 'Acot2024');
   if(valido){
     loginAttempts = 0;
     blockUntil = 0;
     try{ sessionStorage.setItem('sesion_acot', JSON.stringify({usuario:user, expira:Date.now()+(SESSION_HOURS*3600*1000)})); }catch(e){}
     var ls = document.getElementById('loginScreen');
     if(ls){ ls.style.cssText = 'display:none!important'; }
-    ();
+        cargarRegistros();
   } else {
     loginAttempts++;
     if(loginAttempts >= 10){
