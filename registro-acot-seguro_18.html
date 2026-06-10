@@ -555,10 +555,10 @@ let loginAttempts = 0;
 let blockUntil = 0;
 
 function intentarLogin(){
-  if(Date.now() < blockUntil) return;h
+  if(Date.now() < blockUntil) return;
   var uEl = document.getElementById('loginUser');
   var pEl = document.getElementById('loginPass');
-  var user = uEl ? uEl.value.trim().toLowerCase() : '';h
+  var user = uEl ? uEl.value.trim().toLowerCase() : '';
   var pass = pEl ? pEl.value : '';
   if(!user || !pass){ mostrarLoginError('Ingresa usuario y contraseña.'); return; }
   var valido = (user === 'acotseminario1' && pass === 'Acot2024');
@@ -1069,7 +1069,7 @@ async function enviarExcel(){
   if(!excelDatos.length){ showToast('No hay datos para enviar.', true); return; }
   var validos = excelDatos.filter(function(r){ return r.nombres && r.apellidos && r.nroDoc && r.funcionario; });
   if(validos.length === 0){ showToast('❌ Ningun registro tiene los campos minimos.', true); return; }
-  document.getElementById('btnExcelText').style.display = 'none';h
+  document.getElementById('btnExcelText').style.display = 'none';
   document.getElementById('btnExcelSpinner').style.display = 'inline-block';
   document.getElementById('btnCargarExcel').disabled = true;
   var enviados = 0; var errores = 0;
