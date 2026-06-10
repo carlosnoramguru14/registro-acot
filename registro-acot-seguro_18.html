@@ -782,7 +782,7 @@ function cargarRegistros(){
     registros = JSON.parse(localStorage.getItem('extranjeros_pdi') || '[]');
     renderTabla(); actualizarStats();
     if(btnAct){ btnAct.disabled = false; btnAct.textContent = '🔄 Actualizar'; }
-  }, 8000);
+  }, 15000);
   window[cbName] = function(data){
     clearTimeout(tout); delete window[cbName];
     try{ document.body.removeChild(sc); } catch(e){}
